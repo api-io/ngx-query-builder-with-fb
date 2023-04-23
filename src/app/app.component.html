@@ -3,31 +3,10 @@
   [config]="config"
   (ngModelChange)="onQueryBuilderChange($event)"
 >
-  <ng-container *queryInput="let rule; type: 'object'; let field = field">
-    <div *ngIf="rule.operator === 'between'; else defaultInput">
-      <input type="text" [(ngModel)]="rule.value[0]" />
-      <br />
-      <input type="text" [(ngModel)]="rule.value[1]" />
-    </div>
+  <!-- <ng-container *queryInput="let rule; type: 'all-accounts'">
+    <div>All Accounts</div>
+  </ng-container> -->
 
-    <ng-template #defaultInput>
-      <div>
-        <input type="text" [(ngModel)]="rule.value" />
-        {{ field | json }}
-      </div>
-    </ng-template>
-  </ng-container>
-  <ng-container
-    *parentButtonGroup="
-      let ruleset;
-      let addRule = addRule;
-      let addRuleSet = addRuleSet;
-      let removeRuleSet = removeRuleSet;
-      let $implicit = $implicit
-    "
-  >
-    <button mat-button (click)="addRule()">+ Rule</button>
-  </ng-container>
   <ng-container
     *queryButtonGroup="
       let ruleset;
@@ -38,34 +17,27 @@
       let $parent = $parent
     "
   >
-    <div *ngIf="$implicit.root; else root">
+    <div *ngIf="ruleset.rules.length > 0; else root">
       <button mat-button (click)="addRule()">+ Rule</button>
+      <button
+        fd-button
+        fdType="transparent"
+        (click)="removeRuleSet()"
+        glyph="delete"
+      >
+        X
+      </button>
     </div>
 
     <ng-template #root>
       <div>
-        <ng-container *querySwitchGroup="let ruleset">
-          <select
-            *ngIf="ruleset.rules.length > 1"
-            [(ngModel)]="ruleset.condition"
-          >
-            <option type="radio" title="And" value="and">and</option>
-            <option type="radio" title="And" value="or">or</option>
-          </select>
-          <ng-template #root> </ng-template>
-        </ng-container>
-        <button (click)="add(ruleset)">+</button>
-
-        <button mat-button (click)="addRule()">+ Rule</button>
         <button mat-button (click)="addRuleSet()">+ RuleSet</button>
-
-        <button mat-button (click)="removeRuleSet()">- Ruleset</button>
       </div>
     </ng-template>
 
-    <ng-template #ruleset>
-      <button mat-button (click)="addRule()">+ Rule</button>
-    </ng-template>
+    <div>
+      <button (click)="log(ruleset)">log</button>
+    </div>
   </ng-container>
 
   <ng-container *querySwitchGroup="let ruleset">
@@ -73,7 +45,6 @@
       <option type="radio" title="And" value="and">and</option>
       <option type="radio" title="And" value="or">or</option>
     </select>
-    <ng-template #root> </ng-template>
   </ng-container>
 </query-builder>
 

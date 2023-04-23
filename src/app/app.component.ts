@@ -4,7 +4,11 @@ import {
   Input,
   VERSION,
 } from '@angular/core';
-import { QueryBuilderConfig, RuleSet } from 'ngx-angular-query-builder';
+import {
+  QueryBuilderConfig,
+  RuleSet,
+  QueryBuilderClassNames,
+} from 'ngx-angular-query-builder';
 
 interface Between {
   start: string;
@@ -24,20 +28,14 @@ export class AppComponent {
     condition: 'and',
     rules: [
       {
-        condition: 'or',
-        rules: [
-          { field: 'age', operator: '=', value: 4 },
-          { field: 'age', operator: '>', value: 20 },
-        ],
-      },
-      {
         condition: 'and',
-        rules: [{ field: 'gender', operator: '=', value: 'f' }],
+        rules: [AllAccountsRule],
       },
     ],
   };
 
   @Input() config: QueryBuilderConfig = {
+    addRuleSet: this.addRuleSet.bind(this),
     fields: {
       age: { name: 'Age', type: 'number' },
       gender: {
@@ -54,14 +52,43 @@ export class AppComponent {
         operators: ['between', 'less', 'bigger'],
         defaultValue: [],
       },
+      UID: {
+        name: 'uid',
+        type: 'all-accounts',
+        operators: ['is not null'],
+        defaultOperator: 'is not null',
+      },
     },
   };
+
+  // getClassNames(...args): string {
+  //   const clsLookup = this.classNames
+  //     ? this.classNames
+  //     : this.defaultClassNames;
+  //   const classNames = args
+  //     .map((id) => clsLookup[id] || this.defaultClassNames[id])
+  //     .filter((c) => !!c);
+  //   return classNames.length ? classNames.join(' ') : null;
+  // }
 
   onQueryBuilderChange($event) {
     console.log($event);
   }
 
-  add(parent?: any): void {
-    console.log(parent);
+  log(event?: any): void {
+    console.log(event);
+  }
+
+  addRuleSet(parent?: RuleSet): void {
+    parent.rules = parent.rules.concat([
+      {
+        condition: 'and',
+        rules: [AllAccountsRule],
+      },
+    ]);
   }
 }
+const AllAccountsRule = {
+  field: 'UID',
+  operator: 'is not null',
+};
