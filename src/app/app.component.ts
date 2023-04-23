@@ -38,7 +38,14 @@ export class AppComponent {
   };
 
   @Input() config: QueryBuilderConfig = {
+    addRuleSet: this.addRuleSet.bind(this),
     fields: {
+      UID: {
+        name: 'All Accounts',
+        type: 'all-accounts',
+        defaultValue: 'is not null',
+        operators: ['is not null'],
+      },
       age: { name: 'Age', type: 'number' },
       gender: {
         name: 'Gender',
@@ -63,5 +70,14 @@ export class AppComponent {
 
   log(event?: any): void {
     console.log(event);
+  }
+
+  addRuleSet(parent?: RuleSet): void {
+    parent.rules = parent.rules.concat([
+      {
+        condition: 'and',
+        rules: [{ field: 'UID', operator: 'is not null' }],
+      },
+    ]);
   }
 }

@@ -3,6 +3,10 @@
   [config]="config"
   (ngModelChange)="onQueryBuilderChange($event)"
 >
+  <ng-container *queryInput="let rule; type: 'all-accounts'">
+    <div></div>
+  </ng-container>
+
   <ng-container
     *queryButtonGroup="
       let ruleset;
@@ -27,17 +31,6 @@
 
     <ng-template #root>
       <div>
-        <ng-container *querySwitchGroup="let ruleset">
-          <select
-            *ngIf="ruleset.rules.length > 1"
-            [(ngModel)]="ruleset.condition"
-          >
-            <option type="radio" title="And" value="and">and</option>
-            <option type="radio" title="And" value="or">or</option>
-          </select>
-          <ng-template #root> </ng-template>
-        </ng-container>
-
         <button mat-button (click)="addRuleSet()">+ RuleSet</button>
       </div>
     </ng-template>
