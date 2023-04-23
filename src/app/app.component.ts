@@ -61,7 +61,7 @@ export class AppComponent {
     console.log($event);
   }
 
-  add(parent?: any): void {
-    console.log(parent);
+  log(event?: any): void {
+    console.log(event);
   }
 }
