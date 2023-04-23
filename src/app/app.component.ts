@@ -1,5 +1,10 @@
-import { Component, Input, VERSION } from '@angular/core';
-import { QueryBuilderConfig } from 'ngx-angular-query-builder';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  Input,
+  VERSION,
+} from '@angular/core';
+import { QueryBuilderConfig, RuleSet } from 'ngx-angular-query-builder';
 
 interface Between {
   start: string;
@@ -15,6 +20,7 @@ export class AppComponent {
   @Input() name = 'Angular ' + VERSION.major;
 
   @Input() query = {
+    root: true,
     condition: 'and',
     rules: [
       {
@@ -53,5 +59,9 @@ export class AppComponent {
 
   onQueryBuilderChange($event) {
     console.log($event);
+  }
+
+  add(parent?: any): void {
+    console.log(parent);
   }
 }
